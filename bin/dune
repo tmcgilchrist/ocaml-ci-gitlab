@@ -1,0 +1,14 @@
+(executable
+ (name main)
+ (public_name ocaml-ci-gitlab)
+ (libraries
+   ocaml_ci_gitlab
+   current
+   current_git
+   current_gitlab
+   current_docker
+   current_web
+   gitlab-unix
+   prometheus-app.unix
+   cmdliner))
+
