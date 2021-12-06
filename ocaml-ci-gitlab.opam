@@ -4,6 +4,8 @@ synopsis: "A CI for OCaml projects on GitLab"
 description: "A CI for OCaml projects on GitLab"
 maintainer: ["Tim McGilchrist"]
 authors: ["Tim McGilchrist"]
+homepage: "https://github.com/tmcgilchrist/ocaml-ci-gitlab"
+bug-reports: "https://github.com/tmcgilchrist/ocaml-ci-gitlab/issues"
 license: "ISC"
 depends: [
   "ocaml" {>= "4.08.0"}
@@ -19,7 +21,6 @@ depends: [
   "logs"
   "fmt"
 ]
-  
 pin-depends: [
   [ "current.0.5" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
   [ "current_git.0.5" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
