@@ -12,7 +12,7 @@ depends: [
   "odoc" {with-doc}
   "current" {>= "0.5"}
   "current_git" {>= "0.5"}
-  "current_gitlab"
+  "current_gitlab" {>= "0.5"}
   "current_docker" {>= "0.5"}
   "prometheus"
   "cmdliner"
@@ -21,7 +21,10 @@ depends: [
 ]
   
 pin-depends: [
-  [ "current_gitlab.dev" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
+  [ "current.0.5" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
+  [ "current_git.0.5" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
+  [ "current_gitlab.0.5" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
+  [ "current_docker.0.5" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
 ]
 build: [
   ["dune" "subst"] {pinned}
