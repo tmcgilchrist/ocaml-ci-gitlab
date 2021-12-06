@@ -13,7 +13,7 @@
 (maintainers
   "Tim McGilchrist")
 
-(generate_opam_files true)
+
 
 (package
  (name ocaml-ci-gitlab)

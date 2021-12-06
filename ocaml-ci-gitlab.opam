@@ -10,14 +10,18 @@ depends: [
   "dune"
   "alcotest" {with-test}
   "odoc" {with-doc}
-  "current"
-  "current_git"
+  "current" {>= "0.5"}
+  "current_git" {>= "0.5"}
   "current_gitlab"
-  "current_docker"
+  "current_docker" {>= "0.5"}
   "prometheus"
   "cmdliner"
   "logs"
   "fmt"
+]
+  
+pin-depends: [
+  [ "current_gitlab.dev" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
 ]
 build: [
   ["dune" "subst"] {pinned}
