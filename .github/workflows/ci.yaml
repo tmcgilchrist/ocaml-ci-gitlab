@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build-and-test:
@@ -13,9 +13,7 @@ jobs:
 
       matrix:
         os:
-          - macos-latest
           - ubuntu-latest
-          - windows-latest
 
         ocaml-compiler:
           - 4.12.x
