@@ -1,0 +1,35 @@
+version: '3.7'
+volumes:
+  data:
+  capnp-secrets:
+secrets:
+  ocaml-ci-gitlab-oauth:
+    external: true
+  ocaml-ci-gitlab-token:
+    external: true
+  ocaml-ci-gitlab-webhook-secret:
+    external: true
+networks:
+  infra_default:
+    external: true
+services:
+  ocaml-ci-gitlab:
+    # Deploys an image built via deploy.sh
+    image: ocaml-ci-gitlab
+    command: --gitlab-oauth /run/secrets/ocaml-ci-gitlab-oauth --gitlab-token-file /run/secrets/ocaml-ci-gitlab-token --gitlab-webhook-secret-file /run/secrets/ocaml-ci-gitlab-webhook-secret tmcgilchrist/ocaml-gitlab/29798678 --port 9080
+    # command: --ocluster-cap /run/secrets/tezos-ci-submission-cap --gitlab-token-file /run/secrets/tezos-ci-token --gitlab-webhook-secret-file /run/secrets/tezos-ci-webhook-secret
+    ports:
+    - target: 9080
+      published: 9080
+      protocol: tcp
+    volumes:
+      - 'data:/var/lib/ocurrent'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    secrets:
+      - 'ocaml-ci-gitlab-oauth'
+      - 'ocaml-ci-gitlab-token'
+      - 'ocaml-ci-gitlab-webhook-secret'
+    sysctls:
+      - 'net.ipv4.tcp_keepalive_time=60'
+    networks:
+      - infra_default

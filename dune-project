@@ -1,10 +1,6 @@
 (lang dune 2.0)
 (name ocaml-ci-gitlab)
 
-
-
-
-
 (license ISC)
 
 (authors
@@ -12,8 +8,6 @@
 
 (maintainers
   "Tim McGilchrist")
-
-
 
 (package
  (name ocaml-ci-gitlab)
