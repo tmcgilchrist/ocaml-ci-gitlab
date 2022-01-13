@@ -4,28 +4,24 @@ synopsis: "A CI for OCaml projects on GitLab"
 description: "A CI for OCaml projects on GitLab"
 maintainer: ["Tim McGilchrist"]
 authors: ["Tim McGilchrist"]
+license: "ISC"
 homepage: "https://github.com/tmcgilchrist/ocaml-ci-gitlab"
 bug-reports: "https://github.com/tmcgilchrist/ocaml-ci-gitlab/issues"
-license: "ISC"
 depends: [
   "ocaml" {>= "4.08.0"}
   "dune"
   "alcotest" {with-test}
   "odoc" {with-doc}
-  "current" {>= "0.5"}
-  "current_git" {>= "0.5"}
-  "current_gitlab" {>= "0.5"}
-  "current_docker" {>= "0.5"}
+  "current"
+  "current_git"
+  "current_gitlab"
+  "current_docker"
   "prometheus"
   "cmdliner"
+  "ocaml-ci"
+  "ocaml-ci-service"
   "logs"
   "fmt"
-]
-pin-depends: [
-  [ "current.0.5" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
-  [ "current_git.0.5" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
-  [ "current_gitlab.0.5" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
-  [ "current_docker.0.5" "git+https://github.com/tmcgilchrist/ocurrent.git#gitlab_auth" ]
 ]
 build: [
   ["dune" "subst"] {pinned}
@@ -41,3 +37,4 @@ build: [
     "@doc" {with-doc}
   ]
 ]
+dev-repo: "git+https://github.com/tmcgilchrist/ocaml-ci-gitlab.git"

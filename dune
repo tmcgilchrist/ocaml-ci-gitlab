@@ -1,2 +1,3 @@
 (dirs :standard \ var)
-(vendored_dirs ocurrent ocaml-gitlab)
+(vendored_dirs
+  ocurrent ocaml-gitlab ocaml-matrix ocaml-ci obuilder ocluster ocaml-version)

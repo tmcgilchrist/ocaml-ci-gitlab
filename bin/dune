@@ -4,8 +4,11 @@
  (package ocaml-ci-gitlab)
  (libraries
    ocaml_ci_gitlab
+   ocaml-ci
+   ocaml-ci-service
    current
    current_git
+   current_github
    current_gitlab
    current_docker
    current_web

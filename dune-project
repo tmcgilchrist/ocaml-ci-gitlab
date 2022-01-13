@@ -1,5 +1,6 @@
 (lang dune 2.0)
 (name ocaml-ci-gitlab)
+(generate_opam_files true)
 
 (license ISC)
 
@@ -8,6 +9,7 @@
 
 (maintainers
   "Tim McGilchrist")
+(source (github tmcgilchrist/ocaml-ci-gitlab))
 
 (package
  (name ocaml-ci-gitlab)
@@ -23,6 +25,8 @@
    current_gitlab
    current_docker
    prometheus
-  cmdliner
-  logs
-  fmt))
+   cmdliner
+   ocaml-ci
+   ocaml-ci-service
+   logs
+   fmt))

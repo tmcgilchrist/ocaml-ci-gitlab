@@ -7,6 +7,8 @@ secrets:
     external: true
   ocaml-ci-gitlab-token:
     external: true
+  ocaml-ci-submission.cap:
+    external: true
   ocaml-ci-gitlab-webhook-secret:
     external: true
 networks:
@@ -16,20 +18,38 @@ services:
   ocaml-ci-gitlab:
     # Deploys an image built via deploy.sh
     image: ocaml-ci-gitlab
-    command: --gitlab-oauth /run/secrets/ocaml-ci-gitlab-oauth --gitlab-token-file /run/secrets/ocaml-ci-gitlab-token --gitlab-webhook-secret-file /run/secrets/ocaml-ci-gitlab-webhook-secret tmcgilchrist/ocaml-gitlab/29798678 --port 9080
-    # command: --ocluster-cap /run/secrets/tezos-ci-submission-cap --gitlab-token-file /run/secrets/tezos-ci-token --gitlab-webhook-secret-file /run/secrets/tezos-ci-webhook-secret
+    command: --gitlab-oauth /run/secrets/ocaml-ci-gitlab-oauth --gitlab-token-file /run/secrets/ocaml-ci-gitlab-token --gitlab-webhook-secret-file /run/secrets/ocaml-ci-gitlab-webhook-secret --submission-service /run/secrets/ocaml-ci-submission.cap --capnp-address=tcp:gitlab.ci.ocamllabs.io:9801 --port 9080
+
+    environment:
+      - "CI_PROFILE=production"
+      - "DOCKER_BUILDKIT=1"
+      - "PROGRESS_NO_TRUNC=1"
     ports:
+    - target: 9081
+      published: 9081
+      protocol: tcp
     - target: 9080
       published: 9080
       protocol: tcp
     volumes:
       - 'data:/var/lib/ocurrent'
       - '/var/run/docker.sock:/var/run/docker.sock'
+      - 'capnp-secrets:/capnp-secrets'
     secrets:
       - 'ocaml-ci-gitlab-oauth'
       - 'ocaml-ci-gitlab-token'
+      - 'ocaml-ci-submission.cap'
       - 'ocaml-ci-gitlab-webhook-secret'
     sysctls:
       - 'net.ipv4.tcp_keepalive_time=60'
     networks:
       - infra_default
+
+  # web:
+  #   image: ocaml-ci-github-web
+  #   command: --backend /capnp-secrets/ocaml-ci-github-admin.cap --listen-prometheus=9090
+  #   volumes:
+  #     - 'capnp-secrets:/capnp-secrets:ro'
+  #   sysctls:
+  #     - 'net.ipv4.tcp_keepalive_time=60'
+      
