@@ -1,6 +1,7 @@
 (lang dune 2.0)
 (name ocaml-ci-gitlab)
 (generate_opam_files true)
+(formatting disabled)
 
 (license ISC)
 
