@@ -1,4 +1,0 @@
-(tests
- (names ocaml_ci_gitlab_test)
- (package ocaml-ci-gitlab)
- (libraries alcotest ocaml_ci_gitlab))

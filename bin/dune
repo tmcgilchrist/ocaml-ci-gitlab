@@ -3,7 +3,6 @@
  (public_name ocaml-ci-gitlab)
  (package ocaml-ci-gitlab)
  (libraries
-   ocaml_ci_gitlab
    ocaml-ci
    ocaml-ci-service
    current

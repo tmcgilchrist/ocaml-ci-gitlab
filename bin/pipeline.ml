@@ -22,7 +22,7 @@ let platforms =
 let program_name = "ocaml-ci-gitlab"
 
 (* Link for GitHub statuses. *)
-let url ~owner ~name ~hash = 
+let url ~owner ~name ~hash =
   Uri.of_string (Printf.sprintf "https://gitlab.ci.ocamllabs.io/github/%s/%s/commit/%s" owner name hash)
 
 let opam_repository_commit =
@@ -34,6 +34,7 @@ let opam_repository_commit =
 let gitlab_repos : Gitlab.Repo_id.t list = [
   { Gitlab.Repo_id.owner = "tmcgilchrist"; Gitlab.Repo_id.name = "ocaml-gitlab"; project_id = 29798678 }
 ; { Gitlab.Repo_id.owner = "tmcgilchrist"; Gitlab.Repo_id.name = "ocaml-changes"; project_id = 30953712 }
+; { Gitlab.Repo_id.owner = "talex5"      ; Gitlab.Repo_id.name = "gemini-eio"; project_id = 28169706 }
 ]
 
 (* Fake Installation module, we don't have this in GitLab. *)
@@ -181,7 +182,7 @@ let v ?ocluster ~app ~solver () =
   let ocluster = Option.map (Cluster_build.config ~timeout:(Duration.of_hour 1)) ocluster in
   Current.with_context opam_repository_commit @@ fun () ->
   Current.with_context platforms @@ fun () ->
-  let installations = Current.return [{Installation.name = "tmcgilchrist"}] |> set_active_installations in
+  let installations = Current.return [{Installation.name = "tmcgilchrist"}; {Installation.name = "talex5"}] |> set_active_installations in
   installations |> Current.list_iter ~collapse_key:"org" (module Installation) @@ fun installation ->
   let repos = repositories installation |> set_active_repos ~installation in
   repos |> Current.list_iter ~collapse_key:"repo" (module Gitlab.Repo_id) @@ fun repo ->
