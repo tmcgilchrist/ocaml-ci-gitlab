@@ -1,7 +1,6 @@
 FROM ocaml/opam:debian-11-ocaml-4.13 AS build
 RUN sudo apt-get update && sudo apt-get install libev-dev capnproto m4 pkg-config libsqlite3-dev libgmp-dev graphviz -y --no-install-recommends
-RUN cd ~/opam-repository && git pull origin -q master && git reset --hard 61c80509aec809b94b4ff7a505235f1ba605c756 && opam update
-RUN sudo ln -f /usr/bin/opam-2.1 /usr/bin/opam
+RUN cd ~/opam-repository && git pull origin -q master && git reset --hard f137b0e3641c241915e1798a5c76520ab1c3b4f8 && opam update
 
 COPY --chown=opam \
     ocurrent/current_docker.opam \
@@ -57,19 +56,22 @@ RUN opam pin add -yn gitlab.dev "./ocaml-gitlab" && \
     opam pin add -yn ocaml-version.dev "./ocaml-version" && \
     opam pin add -yn dockerfile.dev "./ocaml-dockerfile" && \
     opam pin add -yn dockerfile-opam.dev "./ocaml-dockerfile" && \
+
     opam pin add -yn ocaml-ci-service.dev "./ocaml-ci" && \
     opam pin add -yn ocaml-ci-solver.dev "./ocaml-ci" && \
     opam pin add -yn ocaml-ci-api.dev "./ocaml-ci" && \
     opam pin add -yn ocaml-ci.dev "./ocaml-ci" && \
+
     opam pin add -yn matrix-common.dev "./ocaml-matrix" && \
     opam pin add -yn matrix-ctos.dev "./ocaml-matrix" && \
     opam pin add -yn matrix-current.dev "./ocaml-matrix" && \
     opam pin add -yn ocluster-api.dev "./ocluster"
+
 COPY --chown=opam ocaml-ci-gitlab.opam /src/
-RUN opam install -y --deps-only .
+RUN opam-2.1 install -y --deps-only .
 ADD --chown=opam . .
-RUN opam exec -- dune build ./_build/install/default/bin/ocaml-ci-gitlab
-RUN opam exec -- dune build ./_build/install/default/bin/ocaml-ci-solver
+RUN opam-2.1 exec -- dune build ./_build/install/default/bin/ocaml-ci-gitlab
+RUN opam-2.1 exec -- dune build ./_build/install/default/bin/ocaml-ci-solver
 
 FROM debian:11
 RUN apt-get update && apt-get install libev4 openssh-client curl gnupg2 dumb-init git graphviz libsqlite3-dev ca-certificates netbase -y --no-install-recommends

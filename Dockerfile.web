@@ -1,0 +1,43 @@
+FROM ocaml/opam:debian-11-ocaml-4.13 AS build
+RUN sudo ln -f /usr/bin/opam-2.1 /usr/bin/opam
+RUN sudo apt-get update && sudo apt-get install libev-dev capnproto m4 pkg-config libgmp-dev -y --no-install-recommends
+RUN cd ~/opam-repository && git pull origin master && git reset --hard dd31bfa892e6408a76cefd5a446edb1a757fe009 && opam update
+
+COPY --chown=opam \
+    ocurrent/current_rpc.opam \
+    /src/ocurrent/
+
+COPY --chown=opam \
+    ocaml-ci/ocaml-ci-web.opam \
+    ocaml-ci/ocaml-ci-api.opam \
+    /src/ocaml-ci/
+
+WORKDIR /src
+RUN opam pin -yn add ./ocurrent && \
+    opam pin -yn add ./ocaml-ci
+COPY --chown=opam ocaml-ci-gitlab-web.opam /src/
+RUN opam install -y --deps-only .
+ADD --chown=opam . .
+RUN opam config exec -- dune build ./_build/install/default/bin/ocaml-ci-gitlab-web
+
+FROM debian:11
+RUN apt-get update && apt-get install libev4 dumb-init -y --no-install-recommends
+WORKDIR /
+ENTRYPOINT ["dumb-init", "/usr/local/bin/ocaml-ci-gitlab-web"]
+RUN apt-get install ca-certificates -y  # https://github.com/mirage/ocaml-conduit/issues/388
+COPY --from=build /src/_build/install/default/bin/ocaml-ci-gitlab-web /usr/local/bin/
+
+
+# RUN opam-2.1 pin add -yn current_rpc.dev "./ocurrent" && \
+#     opam-2.1 pin add -yn ocaml-ci-web.dev "./ocaml-ci"
+
+# RUN opam-2.1 install -y --deps-only .
+# ADD --chown=opam . .
+# RUN opam-2.1 exec -- dune build ./_build/install/default/bin/ocaml-ci-web
+
+# FROM debian:11
+# RUN apt-get update && apt-get install libev4 dumb-init -y --no-install-recommends
+# WORKDIR /
+# ENTRYPOINT ["dumb-init", "/usr/local/bin/ocaml-ci-web"]
+# RUN apt-get install ca-certificates -y  # https://github.com/mirage/ocaml-conduit/issues/388
+# COPY --from=build /src/_build/install/default/bin/ocaml-ci-web /usr/local/bin/

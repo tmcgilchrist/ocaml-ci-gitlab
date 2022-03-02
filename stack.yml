@@ -45,11 +45,11 @@ services:
     networks:
       - infra_default
 
-  # web:
-  #   image: ocaml-ci-github-web
-  #   command: --backend /capnp-secrets/ocaml-ci-github-admin.cap --listen-prometheus=9090
-  #   volumes:
-  #     - 'capnp-secrets:/capnp-secrets:ro'
-  #   sysctls:
-  #     - 'net.ipv4.tcp_keepalive_time=60'
+  web:
+    image: ocaml-ci-github-web
+    command: --backend /capnp-secrets/ocaml-ci-admin.cap --listen-prometheus=9090
+    volumes:
+      - 'capnp-secrets:/capnp-secrets:ro'
+    sysctls:
+      - 'net.ipv4.tcp_keepalive_time=60'
       

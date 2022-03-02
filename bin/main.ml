@@ -142,9 +142,10 @@ let submission_service =
 
 let cmd =
   let doc = "Build OCaml projects on GitLab" in
-  Term.(term_result (const main $ setup_log $ Current.Config.cmdliner $ Current_web.cmdliner $
+  let term = Term.(term_result (const main $ setup_log $ Current.Config.cmdliner $ Current_web.cmdliner $
                      capnp_address $ Current_gitlab.Auth.cmdliner $
-                     Current_gitlab.Api.cmdliner $ submission_service )),
-  Term.info "ocaml-ci-gitlab-service" ~doc
+                     Current_gitlab.Api.cmdliner $ submission_service )) in
+  let info = Cmd.info "ocaml-ci-gitlab-service" ~doc in
+  Cmd.v info term
 
-let () = Term.(exit @@ eval cmd)
+let () = exit @@ Cmd.eval cmd

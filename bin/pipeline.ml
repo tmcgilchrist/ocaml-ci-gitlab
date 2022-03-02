@@ -8,16 +8,18 @@ module Docker = Current_docker.Default
 
 let platforms =
   let schedule = Current_cache.Schedule.v ~valid_for:(Duration.of_day 30) () in
-  let v { Ocaml_ci_service.Conf.label; builder; pool; distro; ocaml_version; arch } =
-    let base = Platform.pull ~arch ~schedule ~builder ~distro ~ocaml_version in
+  let v { Ocaml_ci_service.Conf.label; builder; pool; distro; ocaml_version; arch; opam_version } =
+    let base = Platform.pull ~arch ~schedule ~builder ~distro ~ocaml_version ~opam_version in
     let host_base =
       match arch with
       | `X86_64 -> base
-      | _ -> Platform.pull ~arch:`X86_64 ~schedule ~builder ~distro ~ocaml_version
+      | _ -> Platform.pull ~arch:`X86_64 ~schedule ~builder ~distro ~ocaml_version  ~opam_version
     in
-    Platform.get ~arch ~label ~builder ~pool ~distro ~ocaml_version ~host_base base
+    Platform.get ~arch ~label ~builder ~pool ~distro ~ocaml_version ~host_base ~opam_version base
   in
-  Current.list_seq (List.map v Ocaml_ci_service.Conf.platforms)
+  let v2_0 = Ocaml_ci_service.Conf.platforms `V2_0 in
+  let v2_1 = Ocaml_ci_service.Conf.platforms `V2_1 in
+  Current.list_seq (List.map v (v2_0 @ v2_1))
 
 let program_name = "ocaml-ci-gitlab"
 
@@ -90,12 +92,10 @@ let build_with_docker ?ocluster ~repo ~analysis source =
         []
     | Ok analysis ->
       match Analyse.Analysis.selections analysis with
-      | `Opam_monorepo config ->
-        let lint_selection = Opam_monorepo.selection_of_config config in
-        [
-          Spec.opam ~label:"(lint-fmt)" ~selection:lint_selection ~analysis (`Lint `Fmt);
-          Spec.opam_monorepo ~config
-        ]
+      | `Opam_monorepo builds ->
+         let lint_selection = Opam_monorepo.selection_of_config (List.hd builds) in
+         Spec.opam ~label:"(lint-fmt)" ~selection:lint_selection ~analysis (`Lint `Fmt)
+         :: List.map (fun config -> Spec.opam_monorepo ~config) builds
       | `Opam_build selections ->
         let lint_selection = List.hd selections in
         let builds =
