@@ -26,7 +26,7 @@
    current_gitlab
    current_docker
    prometheus
-   cmdliner
+   (cmdliner (>= 1.1.0))
    ocaml-ci
    ocaml-ci-service
    logs
