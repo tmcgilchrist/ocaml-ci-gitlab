@@ -1,24 +1,32 @@
 [submodule "ocurrent"]
 	path = ocurrent
-	url = https://github.com/tmcgilchrist/ocurrent.git
+	url = https://github.com/ocurrent/ocurrent.git
+	branch = master
 [submodule "ocaml-gitlab"]
 	path = ocaml-gitlab
 	url = https://github.com/tmcgilchrist/ocaml-gitlab.git
+	branch = master
 [submodule "ocaml-ci"]
 	path = ocaml-ci
-	url = https://github.com/tmcgilchrist/ocaml-ci.git
+	url = https://github.com/ocurrent/ocaml-ci.git
+	branch = master
 [submodule "ocaml-matrix"]
 	path = ocaml-matrix
-	url = https://github.com/clecat/ocaml-matrix.git
+	url = https://github.com/mirage/ocaml-matrix.git
+	branch = main
 [submodule "obuilder"]
 	path = obuilder
 	url = https://github.com/ocurrent/obuilder.git
+	branch = master
 [submodule "ocluster"]
 	path = ocluster
 	url = https://github.com/ocurrent/ocluster.git
+	branch = master
 [submodule "ocaml-version"]
 	path = ocaml-version
 	url = https://github.com/ocurrent/ocaml-version.git
+	branch = master
 [submodule "ocaml-dockerfile"]
 	path = ocaml-dockerfile
 	url = https://github.com/avsm/ocaml-dockerfile.git
+	branch = master
